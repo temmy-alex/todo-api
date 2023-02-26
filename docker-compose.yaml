@@ -1,0 +1,29 @@
+version: '3'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  todo-api-example:
+    build: .
+    networks:
+      - app-tier
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbpgsql
+    volumes:
+      - ".:/todo-api-example/src/app/"
+  dbpgsql:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    networks:
+      - app-tier
