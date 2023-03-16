@@ -19,12 +19,12 @@ class TodoController {
         Todo.create({
             title: req.body.title
         })
-            .then(data => {
-                res.status(201).json({data, message: "Todo created"})
-            })
-            .catch(err => {
-                res.status(500).json({message: "Something went wrong", error: err})
-            })
+        .then(data => {
+            res.status(201).json({data, message: "Todo created!"})
+        })
+        .catch(err => {
+            res.status(500).json({message: "Something went wrong", error: err})
+        })
     }
 
     static detail (req, res, next){
@@ -54,6 +54,9 @@ class TodoController {
                     return Todo.update({title: req.body.title}, {where: {id: req.params.id}})
                 }
             })
+            .then(data => {
+                res.status(200).json({message: 'Todo updated!'})
+            })
             .catch(err => {
                 res.status(500).json({message: "Something went wrong", error: err})
             })
@@ -62,14 +65,17 @@ class TodoController {
     static delete (req, res, next) {
         Todo.findByPk(req.params.id)
             .then(data => {
-                if (!data){
-                    throw ({status: 404, msg: "Data not found"})
+                if (!data) {
+                    res.status(404).json({status: 404, message: 'Todo not found!'})
                 } else {
-                    return Todo.update({title: req.body.title}, {where: {id: req.params.id}})
+                    return Article.destroy({where: {id: req.params.id}})
                 }
             })
+            .then(data => {
+                res.status(200).json({message: 'Todo deleted!'})
+            })
             .catch(err => {
-                res.status(500).json({message: "Something went wrong", error: err})
+                next(err)
             })
     }
 }

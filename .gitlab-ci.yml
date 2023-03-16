@@ -1,0 +1,40 @@
+image: docker:latest
+
+variables:
+  REPOSITORY_URL: growcastdev/apitodo-cicd
+  IMAGE_TAG: latest
+
+services:
+- docker:dind
+
+before_script:
+  - docker login --username=$DH_USERNAME --password=$DH_PASSWORD
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - echo "Building image..."
+    - docker build 
+      -t apitodo-cicd:latest 
+      --build-arg PORT=$PORT 
+      --no-cache .
+    - echo "Tagging image..."
+    - docker tag apitodo-cicd:latest $REPOSITORY_URL:latest
+    - echo "Pushing image..."
+    - docker push $REPOSITORY_URL:latest
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - docker stop apitodo-cicd || true && docker rm apitodo-cicd || true
+    - docker container run -dt -p $PORT:$PORT --name apitodo-cicd $REPOSITORY_URL:latest
+    - docker image prune -f
+  only:
+    - master
+    
