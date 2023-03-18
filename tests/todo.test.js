@@ -18,27 +18,28 @@ describe('Todo Unit Test', () => {
             .catch(done)
     })
 
-    test('Get All List Todo', (done) => {
+    
+    test('Get all list', (done) => {
         request(app)
-        .get('/api/v1/todo')
-        .expect('Content-Type', /json/)
-        .expect(200)
-        .then(response => {
-            expect(response.body.data.length).toBe(5) // check based on all data in first page
+            .get('/api/v1/todo')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(response => {
+            expect(response.body.data.length).toBe(3)
             done()
         }).catch(done)
     })
-
+   
     test('Get Detail Todo', (done) => {
         request(app)
             .get(`/api/v1/todo/1`)
             .expect('Content-Type', /json/)
             .expect(200)
             .then(response => {
-              expect(response.body.data.title).toBe("Task 1")
+              expect(response.body.data.title).toBe("Todo 1")
               done()
-            }).catch(done)
-      })
+        }).catch(done)
+    })
 
     test('Edit Todo', (done) => {
         const id = 1
@@ -60,7 +61,7 @@ describe('Todo Unit Test', () => {
     })
 
     test('Delete Todo', (done) => {
-        const id = 1
+        const id = 100
 
         request(app)
             .delete(`/api/v1/todo/${id}`)

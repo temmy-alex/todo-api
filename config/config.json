@@ -2,14 +2,15 @@
   "development": {
     "username": "user",
     "password": "password",
-    "database": "todo_api",
+    "database": "todo_api_example",
     "host": "dbpgsql",
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "root",
-    "database": "todo_api-test",
+    "username": "user",
+    "password": "password",
+    "database": "todo_api_test_example",
+    "host": "dbpgsql",
     "dialect": "postgres"
   },
   "production": {

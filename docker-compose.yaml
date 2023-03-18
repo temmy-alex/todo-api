@@ -10,7 +10,7 @@ services:
     networks:
       - app-tier
     ports:
-      - "8070:8070"
+      - "8010:8010"
     depends_on:
       - dbpgsql
     volumes:
